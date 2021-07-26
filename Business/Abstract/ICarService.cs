@@ -11,9 +11,14 @@ namespace Business.Abstract
 
         //bool UpdatedAuthority(Car car);
 
-        bool YetkisiVarMı(bool yetki);
+       
 
         void Add(Car car);
 
+
+        void Update(Car car);
+        void Delete(Car car);
+
+        List<Car> GetById(int BrandId);
     }
 }

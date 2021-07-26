@@ -13,6 +13,7 @@ namespace Business.Concrete
     {
         
         ICarDal _carDal;
+        
 
         public CarManager(ICarDal carDal)
         {
@@ -21,11 +22,16 @@ namespace Business.Concrete
 
         public void Add(Car car)
         {
-            if (YetkisiVarMı(true))
-            {
+            
                 _carDal.Add(car);
+            
+            
+           
+        }
 
-            }
+        public void Delete(Car car)
+        {
+            _carDal.Delete(car);
         }
 
         public List<Car> GetAll()
@@ -37,32 +43,20 @@ namespace Business.Concrete
 
         }
 
-        
-        public bool YetkisiVarMı(bool yetki)
+        public List<Car> GetById(int BrandId)
         {
-            if (yetki == true)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }    
-            
+            return _carDal.GetById(BrandId);
         }
 
+        public void Update(Car car)
+        {
+            _carDal.Update(car);
+        }
+
+       
+
         
 
-        //public bool UpdatedAuthority(Car car)
-        //{
-        //    if(car.CarId==1)
-        //    {
-        //        return true;
-        //    }
-        //    else
-        //    {
-        //        return false;
-        //    }    
-        //}
+        
     }
 }
