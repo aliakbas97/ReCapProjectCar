@@ -1,5 +1,6 @@
 ﻿using Business.Concrete;
 using DataAccess.Concrete;
+using DataAccess.Concrete.EntityFramework;
 using Entities.Concrete;
 using System;
 
@@ -9,71 +10,17 @@ namespace ConsoleUI
     {
         static void Main(string[] args)
         {
-            CarManager carManager = new CarManager(new InMemoryCarDal());
+            CarManager carManager = new CarManager(new EfCarDal());
 
-
+            carManager.Add(new Car {CarId=6,  BrandId = 5, ColorId = 3, DailyPrice = 600, ModelYear = 1998, Description = " 200000 km ,4 cylinder" });
+            carManager.Update(new Car { CarId = 3, BrandId = 4, ColorId = 2, DailyPrice = 800, ModelYear = 2000, Description = " 250000 KM , 4 CYLİNDER " });
             
             foreach (var carr in carManager.GetAll())
             {
-                Console.WriteLine(carr.CarId + "  " + carr.BrandId + "  " + carr.ColorId + "  " + carr.DailyPrice+ "  "+ carr.Description);
+                Console.WriteLine( carr.CarId+ " " +carr.BrandId + "  " + carr.ColorId + "  " +carr.DailyPrice + "  " +carr.ModelYear+ "   " +  carr.Description);
             }
-
-            Console.WriteLine(" UPDATED CARID 1");
             
-
-            carManager.Add(new Car { CarId = 8, BrandId = 7, ColorId = 4, ModelYear = 1999, DailyPrice = 3500, Description = " Mazda, Green, 1996 model , fiyat 10500" });
-
-          carManager.Update(new Car { CarId = 1, BrandId = 5, ColorId = 4, ModelYear = 1996, DailyPrice = 9500, Description = " Mercedes, Green, 1996 model , fiyat 9500" });
-
-            Console.WriteLine(" branId si 2 olan lar ");
-
-            foreach (var carbrandID in carManager.GetById(2))
-            {
-                Console.WriteLine(carbrandID.CarId + "  " + carbrandID.BrandId + "  " + carbrandID.ColorId + "  " + carbrandID.DailyPrice + "  " + carbrandID.Description);
-            } 
-
-
-            Console.WriteLine(" CardId güncellendikten sonraki liste ");
-
-            //foreach (var carUpdate in carManager.GetAll())
-            //{
-            //    Console.WriteLine(carUpdate.CarId+ " " + carUpdate.BrandId + " " +carUpdate.ColorId + " " + carUpdate.DailyPrice + " " +carUpdate.Description);
-            //}
-
-            foreach (var updatedCars in carManager.GetAll())
-            {
-                Console.WriteLine(updatedCars.CarId + "  " + updatedCars.BrandId + "  " + updatedCars.ColorId + "  " + updatedCars.DailyPrice + "  " + updatedCars.Description);
-            }
-
-
-            Console.WriteLine(" CarId = 3 olanı silinince tablo ");
-            carManager.Delete(new Car { CarId = 3 });
-
-            foreach (var cardelete in carManager.GetAll())
-            {
-                Console.WriteLine(cardelete.CarId + "  " + cardelete.BrandId + "  " + cardelete.ColorId + "  " + cardelete.DailyPrice + "  " + cardelete.Description);
-            }
-            Console.WriteLine(" yeni car eklendi carId = 9 ");
             
-            carManager.Add(new Car { CarId = 9, BrandId = 6, ColorId = 6, ModelYear = 1994, DailyPrice = 13500, Description = " ferrari, blue, 1994 model , fiyat 13500" });
-
-            foreach (var caradd in carManager.GetAll())
-            {
-                Console.WriteLine(caradd.CarId + "  " + caradd.BrandId + "  " + caradd.ColorId + "  " + caradd.DailyPrice + "  " + caradd.Description);
-            }
-
-
-            Console.WriteLine(" Yeni araba eklendi ");
-
-
-            
-
-            carManager.Add(new Car { CarId = 10, BrandId = 9, ColorId = 6, ModelYear = 1984, DailyPrice = 17500, Description = " lambo, red, 1984 model , fiyat 17500" });
-            
-            foreach (var caradde in carManager.GetAll())
-            {
-                Console.WriteLine(caradde.CarId + "  " + caradde.BrandId + "  " + caradde.ColorId + "  " + caradde.DailyPrice + "  " + caradde.Description);
-            }
         }
     }
 }

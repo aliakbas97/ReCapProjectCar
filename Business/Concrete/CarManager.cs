@@ -43,10 +43,25 @@ namespace Business.Concrete
 
         }
 
-        public List<Car> GetById(int BrandId)
+        public List<Car> GetCarsByBrandId(int id)
         {
-            return _carDal.GetById(BrandId);
+            return _carDal.GetAll(p => p.BrandId == id);
         }
+
+        public List<Car> GetCarsByColorId(int id)
+        {
+            return _carDal.GetAll(p => p.ColorId == id);
+        }
+
+        public List<Car> GetCarsByDailyPrice(decimal min, decimal max)
+        {
+            return _carDal.GetAll(p => p.DailyPrice >= min && p.DailyPrice <= max);
+        }
+
+        //public List<Car> GetById(int BrandId)
+        //{
+        //    return _carDal.GetById(BrandId);
+        //}
 
         public void Update(Car car)
         {
