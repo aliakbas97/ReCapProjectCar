@@ -10,6 +10,26 @@ namespace ConsoleUI
     {
         static void Main(string[] args)
         {
+            // RentCarTest();
+            CarManager carManager = new CarManager(new EfCarDal());
+
+            foreach (var car in carManager.GetCarDetails())
+            {
+                Console.WriteLine(car.CarName + "  " + car.BrandName + "    " +  car.ColorName +   "    "  + car.DailyPrice );
+            }
+
+
+
+
+        }
+
+
+
+
+
+
+        private static void RentCarTest()
+        {
             CarManager carManager = new CarManager(new EfCarDal());
 
             carManager.Add(new Car { CarId = 10, BrandId = 5, ColorId = 3, DailyPrice = 600, ModelYear = 1998, Description = "c" });
@@ -17,7 +37,7 @@ namespace ConsoleUI
 
             foreach (var carr in carManager.GetAll())
             {
-                Console.WriteLine(carr.CarId + " " + carr.BrandId + "  " + carr.ColorId + "  " + carr.DailyPrice + "  " + carr.ModelYear + "   " + carr.Description);
+                Console.WriteLine(carr.CarId + " " + carr.BrandId + "  " + carr.ColorId + "  " + carr.DailyPrice + "  " + carr.ModelYear + "   " + carr.Description+ " "+carr.CarName);
             }
 
             foreach (var car in carManager.GetCarsByBrandId(2))

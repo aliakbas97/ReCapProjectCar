@@ -1,4 +1,6 @@
-﻿using Entities.Abstract;
+﻿
+using Core.DataAccess;
+using Core.DataAccess.Entity;
 using System;
 using System.Collections.Generic;
 using System.Text;
