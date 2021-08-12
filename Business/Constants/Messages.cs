@@ -18,5 +18,18 @@ namespace Business.Constants
         
         internal static string CarGetByColor = "   car is listed by ColorId ";
         internal static string CarGetByDailyPrice = "   car is listed by DailyPrice ";
+        internal static string CustomerAdded;
+        internal static string UserAdded;
+        internal static string UserDeleted;
+        internal static string CustomerDeleted;
+        internal static string RentalDeleted;
+        internal static string RentalCarListed;
+        internal static string CustomerGet = " customer is listed";
+        internal static string CustomerUpdated;
+        internal static string UserUpdated;
+        internal static string RentalCarUpdated;
+        internal static string UserDetailsListed;
+        internal static string RentalCarFail = " rentcar  is not added";
+        internal static string RentalCarSuccess = "   rentcar is added ";
     }
 }

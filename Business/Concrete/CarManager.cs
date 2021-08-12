@@ -17,11 +17,31 @@ namespace Business.Concrete
     {
         
         ICarDal _carDal;
-        
+
+        IUserDal _userDal;
+
+        IRentalDal _rentalDal;
+
+        ICustomerDal _customerDal;
 
         public CarManager(ICarDal carDal)
         {
             _carDal = carDal;
+        }
+
+        public CarManager(ICustomerDal customerDal)
+        {
+            _customerDal = customerDal;
+        }
+
+        public CarManager(IUserDal userDal)
+        {
+            _userDal = userDal;
+        }
+
+        public CarManager(IRentalDal rentalDal)
+        {
+            _rentalDal = rentalDal;
         }
 
         public IResult Add(Car car)
@@ -42,10 +62,53 @@ namespace Business.Concrete
 
         }
 
+        public IResult Add(User user)
+        {
+            _userDal.Add(user);
+            return new SuccessfullResult(Messages.UserAdded);
+        }
+
+        public IResult Add(Customer customer)
+        {
+            _customerDal.Add(customer);
+            return new SuccessfullResult(Messages.CustomerAdded);
+        }
+
+        public IResult Add(Rental rental)
+        {
+            if (rental.ReturnDate == default)
+            {
+                return new ErrorResult(Messages.RentalCarFail);
+            }
+            else
+            {
+                _rentalDal.Add(rental);
+                return new SuccessfullResult(Messages.RentalCarSuccess);
+            }
+        }
+
         public IResult Delete(Car car)
         {
             _carDal.Delete(car);
             return new SuccessfullResult(Messages.CarDeleted);
+        }
+
+        public IResult Delete(User user)
+        {
+            _userDal.Delete(user);
+            return new SuccessfullResult(Messages.UserDeleted);
+        }
+
+        public IResult Delete(Customer customer)
+        {
+            _customerDal.Delete(customer);
+            return new SuccessfullResult(Messages.CustomerDeleted);
+        }
+
+        public IResult Delete(Rental rental)
+        {
+            _rentalDal.Delete(rental);
+            return new SuccessfullResult(Messages.RentalDeleted);
         }
 
         public IDataResult<List<Car>> GetAll()
@@ -55,6 +118,11 @@ namespace Business.Concrete
 
             return new SuccessfullDataResult<List<Car>> (_carDal.GetAll(),Messages.CarGet);
 
+        }
+
+        public IDataResult<List<Rental>> GetAllRentalCar()
+        {
+            return new SuccessfullDataResult<List<Rental>>(_rentalDal.GetAll(), Messages.RentalCarListed);
         }
 
         public IDataResult<List<CarDetailDto>> GetCarDetails()
@@ -77,6 +145,16 @@ namespace Business.Concrete
             return new SuccessfullDataResult<List<Car>>(_carDal.GetAll(p => p.DailyPrice >= min && p.DailyPrice <= max),Messages.CarGetByDailyPrice);
         }
 
+        public IDataResult<List<Customer>> GetCustomerByUserId(int id)
+        {
+            return new SuccessfullDataResult<List<Customer>>(_customerDal.GetAll(p => p.UserId == id), Messages.CustomerGet);
+        }
+
+        public IDataResult<List<UserDetailDto>> GetUserDetails()
+        {
+            return new SuccessfullDataResult<List<UserDetailDto>>(_userDal.GetUserDetails(), Messages.UserDetailsListed);
+        }
+
         //public List<Car> GetById(int BrandId)
         //{
         //    return _carDal.GetById(BrandId);
@@ -88,10 +166,23 @@ namespace Business.Concrete
             return new SuccessfullResult(Messages.CarUpdated);
         }
 
-       
+        public IResult Update(User user)
+        {
+            _userDal.Update(user);
+            return new SuccessfullResult(Messages.UserUpdated);
+        }
 
-        
+        public IResult Update(Customer customer)
+        {
+            _customerDal.Update(customer);
+            return new SuccessfullResult(Messages.CustomerUpdated);
 
-        
+        }
+
+        public IResult Update(Rental rental)
+        {
+            _rentalDal.Update(rental);
+            return new SuccessfullResult(Messages.RentalCarUpdated);
+        }
     }
 }
