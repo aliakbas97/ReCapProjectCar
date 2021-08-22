@@ -9,6 +9,10 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Business.Constants;
+using Business.ValidationRules.FluentValidation;
+using FluentValidation;
+using Core.CrossCuttingConcern.Validation;
+using Core.Aspect.Autofac.Validation;
 
 namespace Business.Concrete
 {
@@ -44,17 +48,16 @@ namespace Business.Concrete
             _rentalDal = rentalDal;
         }
 
+
+
+        [ValidationAspect(typeof(CarValidator))]
         public IResult Add(Car car)
         {
 
-            if (car.Description.Length<=2 && car.DailyPrice < 0)
-                {
-
-                return new ErrorResult(Messages.CarAddedInvalid);
-               
-                 }
-
+            
            
+
+
             _carDal.Add(car);
             return new SuccessfullResult(Messages.CarAdded);
 
