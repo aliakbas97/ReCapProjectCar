@@ -31,5 +31,12 @@ namespace Business.Constants
         internal static string UserDetailsListed;
         internal static string RentalCarFail = " rentcar  is not added";
         internal static string RentalCarSuccess = "   rentcar is added ";
+        internal static string CarImageNotFound;
+        internal static string CarImageUpdated;
+        internal static string CarImageNotUpdated;
+        internal static string CarImageOverLimit;
+        internal static string CarNotAdd;
+        internal static string CarImageAdded;
+        internal static string CarImageNotAdd;
     }
 }
