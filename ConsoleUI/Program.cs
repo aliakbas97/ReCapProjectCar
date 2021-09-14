@@ -13,11 +13,11 @@ namespace ConsoleUI
             // RentCarTest();
             // CarDetailsTest();
             //GetCustomerByUserIdTests();
-            CarManager carManager = new CarManager(new EfRentalDal());
+            RentalManager rentalManager = new RentalManager(new EfRentalDal());
 
-            Console.WriteLine( carManager.Add(new Rental { Id = 9, CarId = 2, CustomerId = 4, RentDate = new DateTime(2015, 06, 08), ReturnDate = new DateTime(2020,07,04 )}).Message);
+            Console.WriteLine(rentalManager.Add(new Rental { Id = 9, CarId = 2, CustomerId = 4, RentDate = new DateTime(2015, 06, 08), ReturnDate = new DateTime(2020,07,04 )}).Message);
             
-            foreach (var rent in carManager.GetAllRentalCar().Data)
+            foreach (var rent in rentalManager.GetAllRentalCar().Data)
             {
                
                 Console.WriteLine(rent.Id +  "  " + rent.CarId +  "   " + rent.CustomerId +"    " +rent.RentDate + "  " + rent.ReturnDate);
@@ -27,14 +27,14 @@ namespace ConsoleUI
 
         private static void GetCustomerByUserIdTests()
         {
-            CarManager carManager = new CarManager(new EfCustomerDal());
+          CustomerManager customerManager = new CustomerManager(new EfCustomerDal());
 
-            carManager.Add(new Customer { UserId = 3, CompanyName = " ANADOLU HOLDİNG " });
+            customerManager.Add(new Customer { UserId = 3, CompanyName = " ANADOLU HOLDİNG " });
 
-            foreach (var customer in carManager.GetCustomerByUserId(3).Data)
+            foreach (var customer in customerManager.GetCustomerByUserId(3).Data)
             {
                 Console.WriteLine(customer.UserId + "    " + customer.CompanyName);
-                Console.WriteLine(carManager.GetCustomerByUserId(3).Message);
+                Console.WriteLine(customerManager.GetCustomerByUserId(3).Message);
             }
         }
 

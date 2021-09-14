@@ -1,6 +1,7 @@
 ﻿using Core.DataAccess.Results;
 using Core.DataAccess.Utilities.Results;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.FileProviders;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,104 +9,103 @@ using System.Text;
 
 namespace Core.Utilities.FileHelper.FileUpload
 {
-    public class FileHelper : IFileHelper
+    public static class FileHelper 
     {
-        private static string currentDirectory = Environment.CurrentDirectory + @"\\wwwroot";
-        private static string folderName = @"\\images\\";
+        private static string _currentDirectory = Environment.CurrentDirectory + "\\wwwroot";
+        private static string _folderName = "\\images\\";
 
-
-
-        public void CheckDirectoryExist(string directory)
+        public static IResult Upload(IFormFile file)
         {
-            if(!Directory.Exists(directory))
+
+            var type = Path.GetExtension(file.FileName);
+            var typeValid = CheckFileTypeValid(type);
+            var randomName = Guid.NewGuid().ToString();
+
+            if (typeValid.Message != null)
             {
-                Directory.CreateDirectory(directory);
+                return new ErrorResult(typeValid.Message);
             }
+
+            CheckDirectoryExists(_currentDirectory + _folderName);
+            CreateImageFile(_currentDirectory + _folderName + randomName + type, file);
+
+            return new SuccessfullResult((_folderName + randomName + type).Replace("\\", "/"));
+
+
+
+        }
+        public static IResult Update(IFormFile file, string carImage)
+        {
+            var fileExist = CheckFileExist(file);
+            if (fileExist.Message != null)
+            {
+                return new ErrorResult(fileExist.Message);
+            }
+
+            var type = Path.GetExtension(file.FileName);
+            var typeValid = CheckFileTypeValid(type);
+            var randomName = Guid.NewGuid().ToString();
+
+            if (typeValid.Message != null)
+            {
+                return new ErrorResult(typeValid.Message);
+            }
+
+            DeleteOldImageFile((_currentDirectory + carImage));
+            CheckDirectoryExists(_currentDirectory + _folderName);
+            CreateImageFile(_currentDirectory + _folderName + randomName + type, file);
+
+            return new SuccessfullResult((_folderName + randomName + type).Replace("\\", "/"));
         }
 
-        public IResult CheckFileExist(IFormFile formFile)
+
+        private static IResult CheckFileExist(IFormFile file)
         {
-           if(formFile!=null && formFile.Length>0)
+            if (file != null && file.Length > 0)
             {
                 return new SuccessfullResult();
             }
-            return new ErrorResult();
+            return new ErrorResult("Resim Dosyası Yok");
         }
 
-        public IResult CheckFileTypeValid(string type)
+        public static IResult Delete(string path)
         {
-            if(type!=".jpeg" || type!=".png" || type!= ".jpg")
-            {
-                return new ErrorResult("bu tipte bir dosya yüklenemez");
-            }
+            DeleteOldImageFile((_currentDirectory + path).Replace("/", "\\"));
             return new SuccessfullResult();
         }
 
-        public void CreateNewFile(string directory, IFormFile formFile)
+        private static void DeleteOldImageFile(string directory)
+        {
+            if (File.Exists(directory))
+            {
+                File.Delete(directory);
+            }
+
+        }
+        private static void CreateImageFile(string directory, IFormFile file)
         {
             using (FileStream fs = File.Create(directory))
             {
-                formFile.CopyTo(fs);
+                file.CopyTo(fs);
                 fs.Flush();
             }
         }
 
-        public IResult Delete(string path)
+        private static IResult CheckFileTypeValid(string type)
         {
-            DeleteOldFile((currentDirectory + path).Replace("/", "\\"));
+            if (type != ".jpeg" && type != ".png" && type != ".jpg")
+            {
+                return new ErrorResult("Tip uygun değil");
+            }
             return new SuccessfullResult();
 
         }
-
-        public void DeleteOldFile(string directory)
+        private static void CheckDirectoryExists(string directory)
         {
-            if (File.Exists(directory.Replace("/", "\\")))
+            if (!Directory.Exists(directory))
             {
-                File.Delete(directory.Replace("/", "\\"));
+                Directory.CreateDirectory(directory);
             }
-        }
-
-        public IResult Update(IFormFile formFile, string imagePath)
-        {
-            var fileExists = CheckFileExist(formFile);
-            if (fileExists.Message != null)
-            {
-                return new ErrorResult(fileExists.Message);
-            }
-            var type = Path.GetExtension(formFile.FileName);
-            var typeValid = CheckFileTypeValid(type);
-            var randomName = Guid.NewGuid().ToString();
-            //var randomName = file.FileName;
-
-
-            if (typeValid == null)
-            {
-                return new ErrorResult(typeValid.Message);
-            }
-            CheckDirectoryExist(currentDirectory + folderName);
-            CreateNewFile(currentDirectory + folderName + randomName + type, formFile);
-            return new SuccessfullResult((folderName + randomName + type).Replace("\\", "/"));
-        }
-
-        public IResult Upload(IFormFile formFile)
-        {
-            var fileExists = CheckFileExist(formFile);
-            if (fileExists.Message != null)
-            {
-                return new ErrorResult(fileExists.Message);
-            }
-            var type = Path.GetExtension(formFile.FileName);
-            var typeValid = CheckFileTypeValid(type);
-            var randomName = Guid.NewGuid().ToString();
-
-
-            if (typeValid == null)
-            {
-                return new ErrorResult(typeValid.Message);
-            }
-            CheckDirectoryExist(currentDirectory + folderName);
-            CreateNewFile(currentDirectory + folderName + randomName + type, formFile);
-            return new SuccessfullResult((folderName + randomName + type).Replace("\\", "/"));
         }
     }
 }

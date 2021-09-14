@@ -13,51 +13,51 @@ namespace Core.DataAccess.EntityFramework
 
         public void Add(TEntity entity)
         {
-            using (TContext carContext = new TContext())
+            using (TContext context = new TContext())
             {
-                var addCar = carContext.Entry(entity);
+                var addCar = context.Entry(entity);
 
                 addCar.State = EntityState.Added;
-                carContext.SaveChanges();
+                context.SaveChanges();
 
             }
         }
 
         public void Delete(TEntity entity)
         {
-            using (TContext carContext = new TContext())
+            using (TContext context = new TContext())
             {
-                var carDelete = carContext.Entry(entity);
+                var carDelete = context.Entry(entity);
                 carDelete.State = EntityState.Deleted;
-                carContext.SaveChanges();
+                context.SaveChanges();
             }
         }
 
         public TEntity Get(Expression<Func<TEntity, bool>> filter)
         {
-            using (TContext carContext = new TContext())
+            using (TContext context = new TContext())
             {
-                return carContext.Set<TEntity>().SingleOrDefault(filter);
+                return context.Set<TEntity>().SingleOrDefault(filter);
             }
         }
 
         public List<TEntity> GetAll(Expression<Func<TEntity, bool>> filter = null)
         {
-            using (TContext carContext = new TContext())
+            using (TContext context = new TContext())
 
             {
 
-                return filter == null ? carContext.Set<TEntity>().ToList() : carContext.Set<TEntity>().Where(filter).ToList();
+                return filter == null ? context.Set<TEntity>().ToList() : context.Set<TEntity>().Where(filter).ToList();
             }
         }
 
         public void Update(TEntity entity)
         {
-            using (TContext carContext = new TContext())
+            using (TContext context = new TContext())
             {
-                var updateCar = carContext.Entry(entity);
+                var updateCar = context.Entry(entity);
                 updateCar.State = EntityState.Modified;
-                carContext.SaveChanges();
+                context.SaveChanges();
             }
 
 
