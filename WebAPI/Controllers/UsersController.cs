@@ -11,65 +11,71 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class RentalsControllers : ControllerBase
+    public class UsersController : ControllerBase
     {
-        IRentalService _rentalService;
+        IUserService _userService;
 
-        public RentalsControllers(IRentalService rentalService)
+        public UsersController(IUserService userService)
         {
-            _rentalService = rentalService;
+            _userService = userService;
+        }
+
+        [HttpGet("getuserdetail")]
+        public IActionResult GetUserDetails()
+        {
+            var result = _userService.GetUserDetails();
+            if(result.Success)
+            {
+                return Ok(result);
+
+
+
+            }
+            return BadRequest(result);
+
+
         }
 
         [HttpPost("add")]
-        public IActionResult Add(Rental rental)
+        public IActionResult Add(User user)
         {
-            var result = _rentalService.Add(rental);
-
+            var result = _userService.Add(user);
             if (result.Success)
             {
                 return Ok(result);
+
+
+
             }
             return BadRequest(result);
 
-
         }
-
-
-        [HttpGet("getall")]
-        public IActionResult GetAllRentalCar()
-        {
-            var result = _rentalService.GetAllRentalCar();
-
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-
-            return BadRequest(result);
-
-        }
-
         [HttpPost("update")]
-        public IActionResult Update(Rental rental)
+        public IActionResult Update(User user)
         {
-            var result = _rentalService.Update(rental);
-            if(result.Success)
+            var result = _userService.Update(user);
+            if (result.Success)
             {
                 return Ok(result);
+
+
+
             }
             return BadRequest(result);
+
         }
         [HttpDelete("delete")]
-        public IActionResult Delete(Rental rental)
+        public IActionResult Delete(User user)
         {
-            var result = _rentalService.Delete(rental);
-            if(result.Success)
+            var result = _userService.Delete(user);
+            if (result.Success)
             {
                 return Ok(result);
+
+
+
             }
             return BadRequest(result);
-
-
 
         }
 
