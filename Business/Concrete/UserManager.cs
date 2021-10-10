@@ -2,8 +2,9 @@
 using Business.Constants;
 using Core.DataAccess.Results;
 using Core.DataAccess.Utilities.Results;
+using Core.Entity.Concrete;
 using DataAccess.Abstract;
-using Entities.Concrete;
+
 using Entities.DTOs;
 using System;
 using System.Collections.Generic;
@@ -32,9 +33,15 @@ namespace Business.Concrete
             return new SuccessfullResult(Messages.UserDeleted);
         }
 
-        public IDataResult<List<UserDetailDto>> GetUserDetails()
+        public IDataResult<User> GetByMail(string email)
         {
-            return new SuccessfullDataResult<List<UserDetailDto>>(_userDal.GetUserDetails(), Messages.UserDetailsListed);
+           return new SuccessfullDataResult<User>(_userDal.Get( u => u.Email == email),Messages.UserMailFound);
+
+        }
+
+        public IDataResult<List<OperationClaim>> GetClaims(User user)
+        {
+            return new SuccessfullDataResult<List<OperationClaim>>(_userDal.GetClaims(user), Messages.UserDetailsListed);
         }
 
 

@@ -14,5 +14,9 @@ namespace Core.DataAccess.Utilities.Results
         {
 
         }
+        public SuccessfullDataResult(string message) : base( true, message)
+        {
+
+        }
     }
 }

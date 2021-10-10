@@ -16,7 +16,9 @@ namespace Core.DataAccess.Utilities.Results
 
         }
 
+        public ErrorDataResult(string message) : base(false, message)
+        {
 
-
+        }
     }
 }
